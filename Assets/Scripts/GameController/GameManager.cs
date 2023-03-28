@@ -8,22 +8,19 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public int currentLevel = 1;
-    public int playerLives;
+    public int playerLives = 3;
     public int score;
-    
+
     
     private GameManager() { }
-	
-    public static GameManager Instance
+
+    private void Awake()
     {
-        get
+        if (instance == null)
         {
-            if (instance == null)
-            {
-                instance = new GameManager();
-            }
-            return instance;
+            instance = this;
         }
+        
     }
-    
+
 }

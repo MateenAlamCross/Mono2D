@@ -1,17 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Camerafollow : MonoBehaviour
 { 
-    public Transform target;
+    private Transform target;
+    // public Transform Game_Controller;
     public float smoothing = 5f;
 
     Vector3 offset;
 
+
+
+
     void Start()
     {
+        target = Game_Controller.instance.playerinstance.transform;
         offset = transform.position - target.position;
+        Debug.Log(target);
     }
 
     void FixedUpdate()
