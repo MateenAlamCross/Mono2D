@@ -10,6 +10,8 @@ public class CoinCollect : MonoBehaviour
         // Debug.Log("Trigger");
         // Debug.Log(other);
         GameManager.instance.score++;
+        Game_Controller.Instance.Score();
+        
         Destroy(gameObject);
         if (other.CompareTag("Player"))
         {

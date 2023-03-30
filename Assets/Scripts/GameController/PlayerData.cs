@@ -19,6 +19,6 @@ public class Player_data
 {
     public string playerName;
     public int playerLevel;
-    public float playerHealth;
+    public int playerHealth = 3;
 }
 

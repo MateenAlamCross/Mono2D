@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -27,5 +29,31 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector3.up*jumpForce,ForceMode.Impulse);
         }
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Spike"))
+        {
+            // Debug.Log(collision.gameObject);
+
+            // Debug.Log(Game_Controller.Instance.levelFailedPanel);
+            // Game_Controller.Instance.levelFailedPanel.SetActive(true);
+            // Game_Controller.Instance.LevelComplete();
+
+            Game_Controller.Instance.LevelFailed();
+
+        }
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Game_Controller.Instance.LevelFailed();
+        }
+
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            Game_Controller.Instance.isPlayerActive = false;
+            Game_Controller.Instance.LevelComplete();
+        }
     }
 }
