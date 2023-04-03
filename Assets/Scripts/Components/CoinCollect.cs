@@ -13,9 +13,6 @@ public class CoinCollect : MonoBehaviour
         Game_Controller.Instance.Score();
         
         Destroy(gameObject);
-        if (other.CompareTag("Player"))
-        {
-           
-        }
+        
     }
 }

@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     [Header("Jump Force")]
     public float jumpForce = 7f;
 
-    
+    private int count = 2;
+    private bool isGround;
     private Rigidbody rb;
     void Start()
     {
@@ -24,36 +25,62 @@ public class PlayerController : MonoBehaviour
 
         rb.velocity = new Vector3(horizontal*moveSpeed, rb.velocity.y);
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump")  && isGround)
         {
+            // Jump();
+            // count--;
             rb.AddForce(Vector3.up*jumpForce,ForceMode.Impulse);
+            isGround = false;
         }
 
     }
 
+    void Jump()
+    {
+        rb.AddForce(Vector3.up*jumpForce,ForceMode.Impulse);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        // Debug.LogError("OnCollision" + collision.gameObject.name.ToString());
+        // if (collision.gameObject.layer == LayerMask.GetMask("EnemyHead"))
+        // {
+        //     Destroy(collision.gameObject);
+        // }
+        
         if (collision.gameObject.CompareTag("Spike"))
         {
-            // Debug.Log(collision.gameObject);
+            Game_Controller.Instance.levelFailEvent.Invoke();
+            
+            //Game_Controller.Instance.LevelFailed();
 
-            // Debug.Log(Game_Controller.Instance.levelFailedPanel);
-            // Game_Controller.Instance.levelFailedPanel.SetActive(true);
-            // Game_Controller.Instance.LevelComplete();
-
-            Game_Controller.Instance.LevelFailed();
 
         }
-
+        
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Game_Controller.Instance.LevelFailed();
-        }
+            Debug.Log("Hited a enemy");
+            Vector3 direction = rb.velocity.normalized;
+            rb.AddForce(direction*(jumpForce)/2);
+            Game_Controller.Instance.levelFailEvent.Invoke();
 
+            // Game_Controller.Instance.LevelFailed();
+        }
+        
         if (collision.gameObject.CompareTag("Finish"))
         {
             Game_Controller.Instance.isPlayerActive = false;
-            Game_Controller.Instance.LevelComplete();
+            Game_Controller.Instance.levelCompleteEvent.Invoke();
+            
+            // Game_Controller.Instance.LevelComplete();
+
+        }
+        
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            Debug.Log(count);
+            count = 2;
+            isGround = this;
         }
     }
 }

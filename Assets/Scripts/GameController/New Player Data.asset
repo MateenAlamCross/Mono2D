@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097d8ed8bfc802f47b822bcfafa324c7, type: 3}
   m_Name: New Player Data
   m_EditorClassIdentifier: 
-  Name: 
   playerData:
   - playerName: GusTav
     playerLevel: 1
-    playerHealth: 60
+    playerHealth: 50
   - playerName: Allen
     playerLevel: 2
     playerHealth: 75
