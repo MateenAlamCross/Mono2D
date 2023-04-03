@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,8 +14,9 @@ public class Game_Controller : MonoBehaviour
 {
     public static Game_Controller Instance;
 
-    [Header("Events")]
+    [HideInInspector]
     public UnityEvent levelFailEvent;
+    [HideInInspector]
     public UnityEvent levelCompleteEvent;
     
     
@@ -54,12 +56,13 @@ public class Game_Controller : MonoBehaviour
     public void Start()
     {    
         
+        //Adding Functions to Events
         levelFailEvent.AddListener(LevelFailed);
         levelCompleteEvent.AddListener(LevelComplete);
         
         Time.timeScale = 1;
         CurrentLevel = GameManager.instance.currentLevel;
-        Debug.Log(CurrentLevel);
+        //Debug.Log(CurrentLevel);
         
         LoadLevel();
         ActivateLevel();
@@ -75,79 +78,107 @@ public class Game_Controller : MonoBehaviour
         if (level.Length > 0 && CurrentLevel-1< level.Length &&   GameManager.instance.playerLives > 0)
         {
             
+            float intialEnemyPositon = 5;
+            float intialSpikePositon = 10;
+            float intialCoinPositon = 1;
+            
             health.text = "Health: " + GameManager.instance.playerLives;
             score.text = "Score: " + GameManager.instance.score;
 
-            if (level[CurrentLevel - 1].enemySpawn.Length > 0)
+            if (level[CurrentLevel - 1].enemySpawn > 0)
             {
-                for (int j = 0; j < level[CurrentLevel-1].enemySpawn.Length; j++)
+        
+
+                for (int j = 0; j < level[CurrentLevel-1].enemySpawn; j++)
                 {
                     
                     // var randomSpawn = new Vector3((level[CurrentLevel - 1].enemySpawn[j].position + position),0,0);
 
                     if (CurrentLevel == 1)
                     {
-                        Vector3 randoms = level[CurrentLevel - 1].enemySpawn[j].position; 
-                        var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
-                       // Instantiate(enemy, level[CurrentLevel-1].enemySpawn[j]);
-                       Instantiate(enemy, position , Quaternion.identity);
-                       Debug.Log(level[CurrentLevel-1].enemySpawn[j].gameObject);
-                    }
-                    else
-                    {
-                        Vector3 randoms = level[CurrentLevel - 1].enemySpawn[j].position; 
-                        var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+                        // Vector3 randoms = level[CurrentLevel - 1].enemySpawn[j].position; 
+                        
+                        // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
                         // Instantiate(enemy, level[CurrentLevel-1].enemySpawn[j]);
+                        
+                        // intialEnemyPositon += 10;
+                        var position = new Vector3(Random.Range( intialEnemyPositon +15 , intialEnemyPositon + 20), 0, 0);
+                       Instantiate(enemy, position , Quaternion.identity);
+                       //Debug.Log(level[CurrentLevel-1].enemySpawn[j].gameObject);
+                       intialEnemyPositon = position.x;
+                    }
+                    else
+                    {
+                        // Vector3 randoms = level[CurrentLevel - 1].enemySpawn[j].position; 
+                        // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+                        
+                        // Instantiate(enemy, level[CurrentLevel-1].enemySpawn[j]);
+                        // intialEnemyPositon += 10;
+                        var position = new Vector3(Random.Range( intialEnemyPositon +15 , intialEnemyPositon + 20), 0, 0);
                         Instantiate(enemy, position , Quaternion.identity);
-                    }
-                }
-            }
-
-            if (level[CurrentLevel - 1].spikesSpawn.Length > 0)
-            {
-                for (int j = 0; j < level[CurrentLevel-1].spikesSpawn.Length; j++)
-                {
-                    if (CurrentLevel == 1)
-                    {
-                        Vector3 randoms = level[CurrentLevel - 1].spikesSpawn[j].position; 
-                        var position = new Vector3(Random.Range(randoms.x + 5 , 9), -0.8f , 0);
-                        // Instantiate(spike, level[CurrentLevel-1].spikesSpawn[j]);
-                        Instantiate(spike, position , Quaternion.identity);
-                        Debug.Log(level[CurrentLevel-1].spikesSpawn[j].gameObject);
-
-
-                    }
-                    else
-                    {
-                        Vector3 randoms = level[CurrentLevel - 1].spikesSpawn[j].position; 
-                        var position = new Vector3(Random.Range(randoms.x + 5 , 9), -0.8f, 0);
-                        // Instantiate(spike, level[CurrentLevel-1].spikesSpawn[j]);
-                        Instantiate(spike, position , Quaternion.identity);
+                        intialEnemyPositon = position.x;
 
                     }
                 }
             }
 
-            if (level[CurrentLevel-1].coinsSpawn.Length >0)
+            if (level[CurrentLevel - 1].spikesSpawn > 0)
             {
-                for (int j = 0; j < level[CurrentLevel-1].coinsSpawn.Length; j++)
+                for (int j = 0; j < level[CurrentLevel-1].spikesSpawn; j++)
                 {
                     if (CurrentLevel == 1)
                     {
-                        Vector3 randoms = level[CurrentLevel - 1].coinsSpawn[j].position; 
-                        var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
-                        // Instantiate(coin, level[CurrentLevel-1].coinsSpawn[j]);
-                        Instantiate(coin, position , Quaternion.identity);
-                        Debug.Log(level[CurrentLevel-1].coinsSpawn[j].gameObject);
+                        // Vector3 randoms = level[CurrentLevel - 1].spikesSpawn[j].position; 
+                        // var position = new Vector3(Random.Range(randoms.x + 1 , 5), -0.8f , 0);
+                        // Instantiate(spike, level[CurrentLevel-1].spikesSpawn[j]);
+                         // intialSpikePositon += 10;
+                        var position = new Vector3(Random.Range( intialSpikePositon + 30 , intialSpikePositon + 35), -0.74f, 0);
+                        Instantiate(spike, position , Quaternion.identity);
+                        //Debug.Log(level[CurrentLevel-1].spikesSpawn[j].gameObject);
+                        intialSpikePositon = position.x;
 
 
                     }
                     else
                     {
-                        Vector3 randoms = level[CurrentLevel - 1].coinsSpawn[j].position; 
-                        var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+                        // Vector3 randoms = level[CurrentLevel - 1].spikesSpawn[j].position; 
+                        // var position = new Vector3(Random.Range(randoms.x + 1 , 5), -0.8f, 0);
+                        // intialSpikePositon += 10;
+                        // Debug.Log(intialSpikePositon);
+                        var position = new Vector3(Random.Range( intialSpikePositon +30 , intialSpikePositon + 35), -0.74f, 0);
+                        // Instantiate(spike, level[CurrentLevel-1].spikesSpawn[j]);
+                        Instantiate(spike, position , Quaternion.identity);
+                        intialSpikePositon = position.x;
+
+                    }
+                }
+            }
+
+            if (level[CurrentLevel-1].coinsSpawn>0)
+            {
+                for (int j = 0; j < level[CurrentLevel-1].coinsSpawn; j++)
+                {
+                    if (CurrentLevel == 1)
+                    {
+                        // Vector3 randoms = level[CurrentLevel - 1].coinsSpawn[j].position; 
+                        // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
                         // Instantiate(coin, level[CurrentLevel-1].coinsSpawn[j]);
+                        // intialCoinPositon += 10;
+                        var position = new Vector3(Random.Range( intialCoinPositon + 15 , intialCoinPositon + 30), 5 ,0);
                         Instantiate(coin, position , Quaternion.identity);
+                        //Debug.Log(level[CurrentLevel-1].coinsSpawn[j].gameObject);
+                        intialCoinPositon = position.x;
+                        
+                    }
+                    else
+                    {
+                        // Vector3 randoms = level[CurrentLevel - 1].coinsSpawn[j].position; 
+                        // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+                        // Instantiate(coin, level[CurrentLevel-1].coinsSpawn[j]);
+                        intialCoinPositon += 10;
+                        var position = new Vector3(Random.Range( intialCoinPositon +15 , intialCoinPositon + 30), 5, 0);
+                        Instantiate(coin, position , Quaternion.identity);
+                        intialCoinPositon = position.x;
 
                     }
                     
@@ -155,51 +186,7 @@ public class Game_Controller : MonoBehaviour
             }
        
         }
-        for (int i = 0; i < level.Length; i++)
-        {
-            // if (CurrentLevel == GameManager.instance.currentLevel && i == 0)
-            // {
-            //     //level[i].levelObject.SetActive(true);
-            //     level[i].objective.SetActive(true);
-            //     playerinstance= Instantiate(player, level[i].playerSpawn);
-            //     ShowInstruction();
-            //     for (int j = 0; j < level[i].enemySpawn.Length; j++)
-            //     {
-            //         Instantiate(enemy, level[i].enemySpawn[j]);
-            //     }
-            //     for (int j = 0; j < level[i].spikesSpawn.Length; j++)
-            //     {
-            //         Instantiate(spike, level[i].spikesSpawn[j]);
-            //     }
-            //     for (int j = 0; j < level[i].coinsSpawn.Length; j++)
-            //     {
-            //         Instantiate(coin, level[i].coinsSpawn[j]);
-            //     }
-            //     
-            // }
-            // if (CurrentLevel == GameManager.instance.currentLevel && i > 0)
-            // {
-            //     level[i].levelObject.SetActive(true);
-            //     level[i-1].levelObject.SetActive(false);
-            //     level[i].objective.SetActive(true);
-            //     level[i-1].objective.SetActive(false);
-            //     playerinstance=Instantiate(player, level[i].playerSpawn);
-            //     ShowInstruction();
-            //     for (int j = 0; j < level[i].enemySpawn.Length; j++)
-            //     {
-            //         Instantiate(enemy, level[i].enemySpawn[j]);
-            //     }
-            //     for (int j = 0; j < level[i].spikesSpawn.Length; j++)
-            //     {
-            //         Instantiate(spike, level[i].spikesSpawn[j]);
-            //     }
-            //     for (int j = 0; j < level[i].coinsSpawn.Length; j++)
-            //     {
-            //         Instantiate(coin, level[i].coinsSpawn[j]);
-            //     }
-            //     
-            // }
-        }
+        
     }
 
     // Activate Current Level
@@ -214,8 +201,7 @@ public class Game_Controller : MonoBehaviour
             } 
             else{
                 level [i].levelObject.SetActive (false);
-                // Destroy (level [i].playerSpawn.gameObject);
-                    // Destroy (level [i].levelObject);
+                
             }
         }
     }
@@ -264,6 +250,11 @@ public class Game_Controller : MonoBehaviour
     {
         Debug.Log("Game Exit");
         Application.Quit();
+        #if UNITY_EDITOR
+
+        UnityEditor.EditorApplication.isPlaying = false;
+        
+        #endif
     }
 
     public void Retry()
@@ -340,9 +331,174 @@ public class Levels
     public GameObject levelObject;
     public Transform playerSpawn;
     public GameObject objective;
-    public Transform[] enemySpawn;
-    public Transform[] spikesSpawn;
-    public Transform[] coinsSpawn;
+    public int enemySpawn;
+    public int spikesSpawn;
+    public int coinsSpawn;
+    // public Transform[] enemySpawn;
+    // public Transform[] spikesSpawn;
+    // public Transform[] coinsSpawn;
     [Multiline]
     public string levelInstruction;
 }
+
+
+  // public void LoadLevel()
+  //   {
+  //       if (level.Length > 0 && CurrentLevel-1< level.Length &&   GameManager.instance.playerLives > 0)
+  //       {
+  //           
+  //           float intialEnemyPositon = 5;
+  //           float intialSpikePositon = 10;
+  //           float intialCoinPositon = 1;
+  //           
+  //           health.text = "Health: " + GameManager.instance.playerLives;
+  //           score.text = "Score: " + GameManager.instance.score;
+  //
+  //           if (level[CurrentLevel - 1].enemySpawn.Length > 0)
+  //           {
+  //       
+  //
+  //               for (int j = 0; j < level[CurrentLevel-1].enemySpawn.Length; j++)
+  //               {
+  //                   
+  //                   // var randomSpawn = new Vector3((level[CurrentLevel - 1].enemySpawn[j].position + position),0,0);
+  //
+  //                   if (CurrentLevel == 1)
+  //                   {
+  //                       // Vector3 randoms = level[CurrentLevel - 1].enemySpawn[j].position; 
+  //                       
+  //                       // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+  //                       // Instantiate(enemy, level[CurrentLevel-1].enemySpawn[j]);
+  //                       
+  //                       // intialEnemyPositon += 10;
+  //                       var position = new Vector3(Random.Range( intialEnemyPositon +15 , intialEnemyPositon + 20), 0, 0);
+  //                      Instantiate(enemy, position , Quaternion.identity);
+  //                      //Debug.Log(level[CurrentLevel-1].enemySpawn[j].gameObject);
+  //                      intialEnemyPositon = position.x;
+  //                   }
+  //                   else
+  //                   {
+  //                       // Vector3 randoms = level[CurrentLevel - 1].enemySpawn[j].position; 
+  //                       // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+  //                       
+  //                       // Instantiate(enemy, level[CurrentLevel-1].enemySpawn[j]);
+  //                       // intialEnemyPositon += 10;
+  //                       var position = new Vector3(Random.Range( intialEnemyPositon +15 , intialEnemyPositon + 20), 0, 0);
+  //                       Instantiate(enemy, position , Quaternion.identity);
+  //                       intialEnemyPositon = position.x;
+  //
+  //                   }
+  //               }
+  //           }
+  //
+  //           if (level[CurrentLevel - 1].spikesSpawn.Length > 0)
+  //           {
+  //               for (int j = 0; j < level[CurrentLevel-1].spikesSpawn.Length; j++)
+  //               {
+  //                   if (CurrentLevel == 1)
+  //                   {
+  //                       // Vector3 randoms = level[CurrentLevel - 1].spikesSpawn[j].position; 
+  //                       // var position = new Vector3(Random.Range(randoms.x + 1 , 5), -0.8f , 0);
+  //                       // Instantiate(spike, level[CurrentLevel-1].spikesSpawn[j]);
+  //                        // intialSpikePositon += 10;
+  //                       var position = new Vector3(Random.Range( intialSpikePositon + 30 , intialSpikePositon + 35), -0.74f, 0);
+  //                       Instantiate(spike, position , Quaternion.identity);
+  //                       //Debug.Log(level[CurrentLevel-1].spikesSpawn[j].gameObject);
+  //                       intialSpikePositon = position.x;
+  //
+  //
+  //                   }
+  //                   else
+  //                   {
+  //                       // Vector3 randoms = level[CurrentLevel - 1].spikesSpawn[j].position; 
+  //                       // var position = new Vector3(Random.Range(randoms.x + 1 , 5), -0.8f, 0);
+  //                       // intialSpikePositon += 10;
+  //                       // Debug.Log(intialSpikePositon);
+  //                       var position = new Vector3(Random.Range( intialSpikePositon +30 , intialSpikePositon + 35), -0.74f, 0);
+  //                       // Instantiate(spike, level[CurrentLevel-1].spikesSpawn[j]);
+  //                       Instantiate(spike, position , Quaternion.identity);
+  //                       intialSpikePositon = position.x;
+  //
+  //                   }
+  //               }
+  //           }
+  //
+  //           if (level[CurrentLevel-1].coinsSpawn.Length >0)
+  //           {
+  //               for (int j = 0; j < level[CurrentLevel-1].coinsSpawn.Length; j++)
+  //               {
+  //                   if (CurrentLevel == 1)
+  //                   {
+  //                       // Vector3 randoms = level[CurrentLevel - 1].coinsSpawn[j].position; 
+  //                       // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+  //                       // Instantiate(coin, level[CurrentLevel-1].coinsSpawn[j]);
+  //                       // intialCoinPositon += 10;
+  //                       var position = new Vector3(Random.Range( intialCoinPositon + 20 , intialCoinPositon + 25), 5 ,0);
+  //                       Instantiate(coin, position , Quaternion.identity);
+  //                       //Debug.Log(level[CurrentLevel-1].coinsSpawn[j].gameObject);
+  //                       intialCoinPositon = position.x;
+  //
+  //
+  //                   }
+  //                   else
+  //                   {
+  //                       // Vector3 randoms = level[CurrentLevel - 1].coinsSpawn[j].position; 
+  //                       // var position = new Vector3(Random.Range(randoms.x + 5 , 9), randoms.y, 0);
+  //                       // Instantiate(coin, level[CurrentLevel-1].coinsSpawn[j]);
+  //                       intialCoinPositon += 10;
+  //                       var position = new Vector3(Random.Range( intialCoinPositon +20 , intialCoinPositon + 25), 5, 0);
+  //                       Instantiate(coin, position , Quaternion.identity);
+  //                       intialCoinPositon = position.x;
+  //
+  //                   }
+  //                   
+  //               }
+  //           }
+  //      
+  //       }
+  //       for (int i = 0; i < level.Length; i++)
+  //       {
+  //           // if (CurrentLevel == GameManager.instance.currentLevel && i == 0)
+  //           // {
+  //           //     //level[i].levelObject.SetActive(true);
+  //           //     level[i].objective.SetActive(true);
+  //           //     playerinstance= Instantiate(player, level[i].playerSpawn);
+  //           //     ShowInstruction();
+  //           //     for (int j = 0; j < level[i].enemySpawn.Length; j++)
+  //           //     {
+  //           //         Instantiate(enemy, level[i].enemySpawn[j]);
+  //           //     }
+  //           //     for (int j = 0; j < level[i].spikesSpawn.Length; j++)
+  //           //     {
+  //           //         Instantiate(spike, level[i].spikesSpawn[j]);
+  //           //     }
+  //           //     for (int j = 0; j < level[i].coinsSpawn.Length; j++)
+  //           //     {
+  //           //         Instantiate(coin, level[i].coinsSpawn[j]);
+  //           //     }
+  //           //     
+  //           // }
+  //           // if (CurrentLevel == GameManager.instance.currentLevel && i > 0)
+  //           // {
+  //           //     level[i].levelObject.SetActive(true);
+  //           //     level[i-1].levelObject.SetActive(false);
+  //           //     level[i].objective.SetActive(true);
+  //           //     level[i-1].objective.SetActive(false);
+  //           //     playerinstance=Instantiate(player, level[i].playerSpawn);
+  //           //     ShowInstruction();
+  //           //     for (int j = 0; j < level[i].enemySpawn.Length; j++)
+  //           //     {
+  //           //         Instantiate(enemy, level[i].enemySpawn[j]);
+  //           //     }
+  //           //     for (int j = 0; j < level[i].spikesSpawn.Length; j++)
+  //           //     {
+  //           //         Instantiate(spike, level[i].spikesSpawn[j]);
+  //           //     }
+  //           //     for (int j = 0; j < level[i].coinsSpawn.Length; j++)
+  //           //     {
+  //           //         Instantiate(coin, level[i].coinsSpawn[j]);
+  //           //     }
+  //           //     
+  //           // }
+  //       }
+  //   }

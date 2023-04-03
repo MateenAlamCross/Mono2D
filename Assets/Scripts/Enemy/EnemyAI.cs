@@ -31,6 +31,8 @@ public class EnemyAI : MonoBehaviour
         {
             float distanceToPlayer = Vector3.Distance(transform.position, Game_Controller.Instance.playerinstance.transform.position);
 
+            // distanceToPlayer -= 5;
+            // Debug.Log(distanceToPlayer-2);
             if (distanceToPlayer <= detectionRange)
             {
                 // Vector2 direction = (playerTransform.position - transform.position).normalized;

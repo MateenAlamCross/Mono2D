@@ -15,10 +15,10 @@ MonoBehaviour:
   playerData:
   - playerName: GusTav
     playerLevel: 1
-    playerHealth: 50
+    playerHealth: 25
   - playerName: Allen
     playerLevel: 2
-    playerHealth: 75
+    playerHealth: 35
   - playerName: Ash
     playerLevel: 3
-    playerHealth: 90
+    playerHealth: 49

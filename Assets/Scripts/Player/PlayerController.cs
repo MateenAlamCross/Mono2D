@@ -23,20 +23,32 @@ public class PlayerController : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
 
-        rb.velocity = new Vector3(horizontal*moveSpeed, rb.velocity.y);
+        Debug.Log("Ground Check" + isGround);
 
         if (Input.GetButtonDown("Jump")  && isGround)
         {
-            // Jump();
-            // count--;
+
             rb.AddForce(Vector3.up*jumpForce,ForceMode.Impulse);
             isGround = false;
+            
+            
+        }
+
+        if (isGround)
+        {
+            rb.velocity = new Vector3(horizontal*moveSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector3(horizontal*moveSpeed/2, rb.velocity.y);
+
         }
 
     }
 
     void Jump()
     {
+
         rb.AddForce(Vector3.up*jumpForce,ForceMode.Impulse);
     }
 
@@ -47,13 +59,18 @@ public class PlayerController : MonoBehaviour
         // {
         //     Destroy(collision.gameObject);
         // }
+        // Debug.Log("Object colliding with="+collision.gameObject.name);
         
         if (collision.gameObject.CompareTag("Spike"))
         {
             Game_Controller.Instance.levelFailEvent.Invoke();
-            
-            //Game_Controller.Instance.LevelFailed();
+            isGround = true;
 
+            //Game_Controller.Instance.LevelFailed();
+        }
+        else
+        {
+            isGround = false;
 
         }
         
@@ -78,9 +95,9 @@ public class PlayerController : MonoBehaviour
         
         if (collision.gameObject.CompareTag("Ground"))
         {
-            Debug.Log(count);
-            count = 2;
-            isGround = this;
+            // Debug.Log(count);
+            // count = 2;
+            isGround = true;
         }
     }
 }
